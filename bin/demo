@@ -1,0 +1,13 @@
+#!/bin/bash
+
+demo=$1
+p=`ls -d /vagrant/demos/${demo}*`
+n=`basename $p`
+
+rm -rf /etc/puppet/manifests
+rm -rf /etc/puppet/modules
+cp -rf $p/modules /etc/puppet/
+cp -rf $p/manifests /etc/puppet/
+chown -Rf puppet /etc/puppet/manifests
+chown -Rf puppet /etc/puppet/modules
+echo "Switching to: $n"

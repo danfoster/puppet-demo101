@@ -13,3 +13,4 @@ systemctl stop firewalld
 yum install -y puppet-server
 systemctl start puppetmaster
 
+echo 'export PATH=$PATH:/vagrant/bin' >> /root/.bashrc
