@@ -1,13 +1,29 @@
 #!/bin/bash
 
+if [ "$#" -ne 1 ]; then
+  echo "USAGE demo <number>"
+  exit 1
+fi
 demo=$1
-p=`ls -d /vagrant/demos/${demo}*`
+p=`ls -d /vagrant/demos/${demo}* 2> /dev/null`
+
+if [ $? -ne 0 ]; then
+  echo "$demo not found"
+  exit 1
+fi
+
 n=`basename $p`
 
 rm -rf /etc/puppet/manifests
 rm -rf /etc/puppet/modules
-cp -rf $p/modules /etc/puppet/
-cp -rf $p/manifests /etc/puppet/
-chown -Rf puppet /etc/puppet/manifests
-chown -Rf puppet /etc/puppet/modules
+
+if [ -d $p/modules ]; then
+  cp -rf $p/modules /etc/puppet/
+  chown -Rf puppet /etc/puppet/modules
+fi
+if [ -d $p/manifests ]; then
+  cp -rf $p/manifests /etc/puppet/
+  chown -Rf puppet /etc/puppet/manifests
+fi
+
 echo "Switching to: $n"
